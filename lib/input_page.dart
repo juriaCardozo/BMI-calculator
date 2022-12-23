@@ -5,7 +5,13 @@ import 'reusable_card.dart';
 
 const bottomContainerHeight = 80.0;
 const activeCardColour = Color(0xFF1D1E33);
+const inactiveCardColor = Color(0xFF111328);
 const bottomContainerColour = Color(0xFFEB1555);
+
+enum Gender {
+  male,
+  female,
+}
 
 class InputPage extends StatefulWidget {
   @override
@@ -13,6 +19,10 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  Color maleCardColour = inactiveCardColor;
+  Color femaleCardColour = inactiveCardColor;
+  Gender? selectedGender;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +35,14 @@ class _InputPageState extends State<InputPage> {
           child: Row(children: [
             Expanded(
               child: ReusableCard(
-                colour: activeCardColour,
+                onPress: () {
+                  setState(() {
+                    selectedGender = Gender.male;
+                  });
+                },
+                colour: selectedGender == Gender.male
+                    ? activeCardColour
+                    : inactiveCardColor,
                 cardChild: IconContent(
                   icon: FontAwesomeIcons.mars,
                   widgetText: 'MALE',
@@ -34,7 +51,14 @@ class _InputPageState extends State<InputPage> {
             ),
             Expanded(
               child: ReusableCard(
-                colour: activeCardColour,
+                onPress: () {
+                  setState(() {
+                    selectedGender = Gender.female;
+                  });
+                },
+                colour: selectedGender == Gender.female
+                    ? activeCardColour
+                    : inactiveCardColor,
                 cardChild: IconContent(
                   widgetText: 'FEMALE',
                   icon: FontAwesomeIcons.venus,
@@ -44,7 +68,11 @@ class _InputPageState extends State<InputPage> {
           ]),
         ),
         Expanded(
-          child: ReusableCard(colour: activeCardColour),
+          child: ReusableCard(
+              colour: activeCardColour,
+              cardChild: Column(
+                children: [Text('HEIGHT')],
+              )),
         ),
         Expanded(
           child: Row(children: [
